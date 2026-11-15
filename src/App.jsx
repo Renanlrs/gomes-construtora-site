@@ -158,6 +158,8 @@ function Menu() {
         <a href="#equipe" className="hover:text-laranja">Quem assina</a>
         <a href={WHATS} target="_blank" rel="noreferrer" className="rounded-full bg-laranja px-4 py-2 font-semibold text-white hover:brightness-110">Orçar obra</a>
       </nav>
+      {/* celular: só o botão principal */}
+      <a href={WHATS} target="_blank" rel="noreferrer" className="rounded-full bg-laranja px-4 py-2 font-body text-[13px] font-semibold text-white shadow-lg shadow-black/30 md:hidden">Orçar obra</a>
     </header>
   )
 }

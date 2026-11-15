@@ -6,6 +6,7 @@ import { WHATS } from './contato'
 // drone desce no lote → contorno acende → holograma → baldrame → estrutura → acabamento → casa real.
 const media = (n) => import.meta.env.BASE_URL + 'media/' + n
 const QUADROS = Number(import.meta.env.VITE_QUADROS || 0) || 241
+const QUADROS_M = 144 // versão celular (gerada pelo montar.sh)
 const pTeste = parseFloat(new URLSearchParams(location.search).get('p')) // ?p=0.5 fixa a rolagem (prints)
 
 // etapas: [centro, palavra, manuscrito, texto, anotação]
@@ -27,10 +28,13 @@ export default function Hero() {
   useEffect(() => {
     const cv = canvas.current
     const ctx = cv.getContext('2d')
-    const imgs = Array.from({ length: QUADROS }, (_, i) => {
+    // celular em pé: quadros recortados no centro, 6 fps (≈10 MB em vez de 43 MB)
+    const cel = matchMedia('(max-width: 767px) and (orientation: portrait)').matches
+    const N = cel ? QUADROS_M : QUADROS
+    const imgs = Array.from({ length: N }, (_, i) => {
       const im = new Image()
       im.decoding = 'async'
-      im.src = media(`seq/f_${String(i + 1).padStart(4, '0')}.jpg`)
+      im.src = media(`${cel ? 'seq_m' : 'seq'}/f_${String(i + 1).padStart(4, '0')}.jpg`)
       return im
     })
     const pronto = (im) => im && im.complete && im.naturalWidth
@@ -42,11 +46,11 @@ export default function Hero() {
       const w = im.naturalWidth * r, h = im.naturalHeight * r
       ctx.drawImage(im, (W - w) / 2, (H - h) / 2, w, h)
     }
-    let raf, atual = p.get() * (QUADROS - 1), ultimo = -1
+    let raf, atual = p.get() * (N - 1), ultimo = -1
     const loop = () => {
-      atual += (p.get() * (QUADROS - 1) - atual) * (isNaN(pTeste) ? 0.14 : 1)
+      atual += (p.get() * (N - 1) - atual) * (isNaN(pTeste) ? 0.14 : 1)
       let k = Math.round(atual)
-      for (let d = 0; d < QUADROS; d++) {
+      for (let d = 0; d < N; d++) {
         if (pronto(imgs[k - d])) { k -= d; break }
         if (pronto(imgs[k + d])) { k += d; break }
       }
