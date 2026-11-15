@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'motion/react'
 import { MessageCircle, Instagram, ShieldCheck, TrendingUp, Landmark, BadgeCheck, Smile, ArrowUpRight, Play } from 'lucide-react'
 import Hero from './HeroVideo'
@@ -180,7 +180,13 @@ const AMBIENTES = [
 function PorDentro() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
-  const x = useTransform(scrollYProgress, [0, 1], ['2%', '-72%'])
+  const trilho = useRef(null)
+  const [fim, setFim] = useState(0)
+  useEffect(() => {
+    const medir = () => { const t = trilho.current; if (t) setFim(Math.max(0, t.scrollWidth - innerWidth + (innerWidth < 768 ? 24 : 48))) }
+    medir(); addEventListener('resize', medir); return () => removeEventListener('resize', medir)
+  }, [])
+  const x = useTransform(scrollYProgress, [0.05, 0.95], [0, -fim])
   return (
     <section id="obras" ref={ref} className="relative h-[320vh] bg-creme text-grafite">
       <div className="sticky top-0 flex h-[100svh] flex-col justify-center overflow-hidden pt-14">
@@ -191,7 +197,7 @@ function PorDentro() {
           </h2>
           <p className="mt-2 max-w-xl font-body text-[14px] text-grafite2">Fotos reais de uma casa construída pela Gomes. Não é render: é como ficou.</p>
         </div>
-        <motion.div style={{ x }} className="mt-8 flex gap-4 pl-6 md:gap-6 md:pl-12">
+        <motion.div ref={trilho} style={{ x }} className="mt-8 flex w-max gap-4 pl-6 md:gap-6 md:pl-12">
           {AMBIENTES.map(([f, t, d], i) => (
             <figure key={f} className="group relative h-[52svh] w-[64vw] shrink-0 overflow-hidden rounded-2xl bg-grafite md:h-[58vh] md:w-[24vw]">
               <img src={m(f)} alt={t + ' — ' + d} loading="lazy" className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
@@ -257,7 +263,7 @@ function Regularizacao() {
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:items-center">
         <motion.div {...sobe}>
           <div className="mini font-semibold text-white/85">Lei do Puxadinho · já está em vigor</div>
-          <h2 className="mt-3 font-serif text-[10vw] font-black uppercase leading-[0.92] md:text-[4vw]">
+          <h2 className="mt-3 font-serif text-[8.4vw] font-black uppercase leading-[0.95] md:text-[4vw]">
             Ampliou sem aprovar? <span className="text-grafite">Dá pra regularizar.</span>
           </h2>
           <p className="mt-5 max-w-md font-body text-[15px] leading-relaxed text-white/95">
@@ -324,16 +330,20 @@ function ProvaSocial() {
         </motion.div>
         <div className="mx-auto mt-12 grid max-w-4xl gap-12 sm:grid-cols-2">
           <motion.figure {...sobe} className="relative mx-auto w-full max-w-[20rem]">
-            <div className="absolute -left-3 -top-3 h-full w-full rounded-3xl border-2 border-laranja" />
-            <VideoCard src="depoimento_larissa.mp4" capa="depoimento_capa.jpg" rotulo="Depoimento · 41s" aria="Assistir ao depoimento da cliente Larissa" />
+            <div className="relative">
+              <div className="absolute -left-3 -top-3 h-full w-full rounded-3xl border-2 border-laranja" />
+              <VideoCard src="depoimento_larissa.mp4" capa="depoimento_capa.jpg" rotulo="Depoimento · 41s" aria="Assistir ao depoimento da cliente Larissa" />
+            </div>
             <figcaption className="mt-5 text-center">
               <p className="font-script text-[1.7rem] leading-snug text-laranja">“Somos gratos por ter feito parte do seu sonho.”</p>
               <p className="mt-1 font-body text-[13px] text-grafite2">Larissa · cliente Gomes, casa nova</p>
             </figcaption>
           </motion.figure>
           <motion.figure {...sobe} transition={{ ...sobe.transition, delay: 0.12 }} className="relative mx-auto w-full max-w-[20rem]">
-            <div className="absolute -right-3 -top-3 h-full w-full rounded-3xl border-2 border-grafite/80" />
-            <VideoCard src="gabriella_obra.mp4" capa="gabriella_obra_capa.jpg" rotulo="Bastidores · 10s" aria="Assistir ao vídeo da Eng. Gabriella na obra" />
+            <div className="relative">
+              <div className="absolute -right-3 -top-3 h-full w-full rounded-3xl border-2 border-grafite/80" />
+              <VideoCard src="gabriella_obra.mp4" capa="gabriella_obra_capa.jpg" rotulo="Bastidores · 10s" aria="Assistir ao vídeo da Eng. Gabriella na obra" />
+            </div>
             <figcaption className="mt-5 text-center">
               <p className="font-script text-[1.7rem] leading-snug text-laranja">“Sei, sim. Eu toco a sua obra.”</p>
               <p className="mt-1 font-body text-[13px] text-grafite2">Eng. Gabriella Gomes · responsável na obra</p>
@@ -469,7 +479,7 @@ function Final() {
           </a>
         </motion.div>
       </div>
-      <footer className="relative border-t border-white/10 px-6 py-6 text-center font-body text-[12px] text-white/55">
+      <footer className="relative border-t border-white/10 px-6 pb-24 pt-6 text-center md:pb-6 font-body text-[12px] text-white/55">
         Gomes Engenharia · Projetos · Construções — Eng. Vaury Gomes · Eng. Gabriella Gomes
       </footer>
     </section>
