@@ -48,45 +48,57 @@ const ETAPAS_REAIS = [
 // os donos logo depois da abertura: fotos REAIS dos posts @construtora.gomes (out/2021, CVOXkV-Jfjp e CVLgh2NJaNB),
 // ampliadas 4x (Real-ESRGAN); frases = legendas originais dos posts
 const DONOS = [
-  ['Eng. Vaury Gomes', 'Engenharia e execução de obras', 'dono_vaury.jpg', '42% 30%', 'O meu maior prazer é poder ver sonhos saindo do papel. Isso é mágico.'],
-  ['Eng. Gabriella Gomes', 'Engenharia e projeto de arquitetura', 'dono_gabriella.jpg', '58% 30%', 'Poder ajudar pessoas a realizarem seus sonhos é algo que preenche o meu coração.'],
+  ['Eng. Vaury Gomes', 'Engenharia e execução de obras', 'dono_vaury.jpg', '42% 30%', 'O meu maior prazer é poder ver sonhos saindo do papel. Isso é mágico.', 'av_vaury.jpg'],
+  ['Eng. Gabriella Gomes', 'Engenharia e projeto de arquitetura', 'dono_gabriella.jpg', '58% 30%', 'Poder ajudar pessoas a realizarem seus sonhos é algo que preenche o meu coração.', 'av_gabriella.jpg'],
 ]
 
+// destaque: foto oficial dos dois com o logo (fundo branco → seção branca, a foto "funde" com a página).
+// Fonte: print enviado pelo Marilton 15/11 (586x715), ampliado 4x Real-ESRGAN → donos_duo.jpg 1600px
 function Donos() {
   return (
-    <section id="donos" className="relative bg-grafite px-6 py-24 md:px-12 md:py-32">
-      <div className="mx-auto max-w-6xl">
-        <motion.div {...sobe} className="max-w-2xl">
+    <section id="donos" className="relative overflow-hidden bg-white px-6 pb-20 pt-16 text-grafite md:px-12 md:pb-28 md:pt-20">
+      <div className="mx-auto grid max-w-6xl items-center gap-6 md:grid-cols-[1.05fr_1fr] md:gap-12">
+        <motion.div {...sobe} className="relative order-1">
+          <div className="absolute inset-x-[8%] bottom-[6%] top-[22%] -z-0 rounded-full bg-laranja/10 blur-3xl" />
+          <img src={m('donos_duo2.jpg')} alt="Eng. Vaury Gomes e Eng. Gabriella Gomes, donos da Gomes Construtora"
+            className="relative mx-auto w-full max-w-[34rem] mix-blend-multiply" />
+        </motion.div>
+        <motion.div {...sobe} className="order-2">
           <div className="tag">Os donos</div>
-          <h2 className="mt-2 font-serif text-[9vw] font-extrabold uppercase leading-[0.95] text-white md:text-[3.8vw]">
-            Quem assina <span className="font-script text-[11vw] normal-case text-laranja md:text-[4.8vw]">é quem constrói</span>
+          <h2 className="mt-2 font-serif text-[10vw] font-extrabold uppercase leading-[0.95] md:text-[3.9vw]">
+            Quem assina <span className="block font-script text-[12vw] normal-case text-laranja md:text-[5vw]">é quem constrói</span>
           </h2>
-          <p className="mt-5 max-w-xl font-body text-[15px] leading-relaxed text-white/75">
+          <p className="mt-5 max-w-lg font-body text-[15px] leading-relaxed text-grafite2">
             A Gomes não terceiriza o seu sonho. Os dois engenheiros donos da construtora estão no seu projeto e na sua obra, do primeiro traço à entrega das chaves.
           </p>
-        </motion.div>
-        <div className="mt-12 grid gap-6 md:grid-cols-2 md:gap-8">
-          {DONOS.map(([n, d, foto, pos, frase], i) => (
-            <motion.figure key={n} {...sobe} transition={{ ...sobe.transition, delay: i * 0.12 }}
-              className="group relative overflow-hidden rounded-3xl bg-white/[0.04] ring-1 ring-white/10">
-              <div className="relative aspect-[4/5] overflow-hidden">
-                <img src={m(foto)} alt={n} loading="lazy" style={{ objectPosition: pos }}
-                  className="h-full w-full object-cover transition duration-[1.2s] group-hover:scale-[1.04]" />
-                <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-grafite/80 to-transparent" />
-              </div>
-              <figcaption className="p-6 md:p-8">
-                <p className="font-script text-2xl leading-snug text-laranja2 md:text-[1.9rem]">“{frase}”</p>
-                <div className="mt-4 flex items-center gap-3">
-                  <img src={m('simbolo.png')} alt="" className="h-8 w-auto" />
+          <div className="mt-8 space-y-4">
+            {DONOS.map(([n, d, , , frase, av]) => (
+              <figure key={n} className="rounded-2xl border border-grafite/10 bg-creme/60 p-5">
+                <blockquote className="font-script text-[1.6rem] leading-snug text-laranja md:text-[1.75rem]">“{frase}”</blockquote>
+                <figcaption className="mt-3 flex items-center gap-3">
+                  <img src={m(av)} alt="" className="h-11 w-11 rounded-full object-cover ring-2 ring-laranja" />
                   <div>
-                    <div className="font-serif text-xl font-bold text-white md:text-2xl">{n}</div>
-                    <div className="font-body text-[13px] text-white/70">{d}</div>
+                    <div className="font-serif text-lg font-bold leading-tight">{n}</div>
+                    <div className="font-body text-[12px] text-grafite2">{d}</div>
                   </div>
-                </div>
-              </figcaption>
-            </motion.figure>
-          ))}
-        </div>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+          <a href={WHATS} target="_blank" rel="noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-full bg-laranja px-6 py-3 font-body text-[14px] font-semibold text-white shadow-lg shadow-laranja/30 hover:brightness-110">
+            <WhatsLogo className="h-4 w-4" /> Falar direto com os engenheiros
+          </a>
+        </motion.div>
+      </div>
+      {/* na obra: as fotos de capacete no canteiro */}
+      <div className="mx-auto mt-14 grid max-w-6xl gap-4 sm:grid-cols-2">
+        {DONOS.map(([n, , foto, pos]) => (
+          <motion.div key={n} {...sobe} className="group relative aspect-[16/10] overflow-hidden rounded-2xl">
+            <img src={m(foto)} alt={n + ' na obra'} loading="lazy" style={{ objectPosition: pos }} className="h-full w-full object-cover transition duration-[1.2s] group-hover:scale-[1.04]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <div className="absolute bottom-3 left-4 font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-white">{n} · na obra</div>
+          </motion.div>
+        ))}
       </div>
     </section>
   )
