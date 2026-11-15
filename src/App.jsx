@@ -24,10 +24,13 @@ export default function App() {
       <Donos />
       <ObraReal />
       <PorDentro />
+      <FaixaSonho />
       <Servicos />
+      <FaixaPlanta />
       <Regularizacao />
       <QuemAssina />
       <EmAndamento />
+      <ProvaSocial />
       <Final />
       <a href={WHATS} target="_blank" rel="noreferrer" aria-label="WhatsApp"
         className="fixed bottom-5 right-5 z-50 flex h-14 w-14 items-center justify-center rounded-[1.1rem] bg-gradient-to-b from-[#5BE37A] to-[#1FB855] text-white shadow-xl shadow-black/40 ring-1 ring-white/30 transition hover:scale-105">
@@ -56,48 +59,35 @@ const DONOS = [
 // Fonte: print enviado pelo Marilton 15/11 (586x715), ampliado 4x Real-ESRGAN → donos_duo.jpg 1600px
 function Donos() {
   return (
-    <section id="donos" className="relative overflow-hidden bg-white px-6 pb-20 pt-16 text-grafite md:px-12 md:pb-28 md:pt-20">
-      <div className="mx-auto grid max-w-6xl items-center gap-6 md:grid-cols-[1.05fr_1fr] md:gap-12">
-        <motion.div {...sobe} className="relative order-1">
-          <div className="absolute inset-x-[8%] bottom-[6%] top-[22%] -z-0 rounded-full bg-laranja/10 blur-3xl" />
-          <img src={m('donos_duo2.jpg')} alt="Eng. Vaury Gomes e Eng. Gabriella Gomes, donos da Gomes Construtora"
-            className="relative mx-auto w-full max-w-[34rem] mix-blend-multiply" />
-        </motion.div>
-        <motion.div {...sobe} className="order-2">
-          <div className="tag">Os donos</div>
-          <h2 className="mt-2 font-serif text-[10vw] font-extrabold uppercase leading-[0.95] md:text-[3.9vw]">
-            Quem assina <span className="block font-script text-[12vw] normal-case text-laranja md:text-[5vw]">é quem constrói</span>
-          </h2>
-          <p className="mt-5 max-w-lg font-body text-[15px] leading-relaxed text-grafite2">
-            A Gomes não terceiriza o seu sonho. Os dois engenheiros donos da construtora estão no seu projeto e na sua obra, do primeiro traço à entrega das chaves.
-          </p>
-          <div className="mt-8 space-y-4">
-            {DONOS.map(([n, d, , , frase, av]) => (
-              <figure key={n} className="rounded-2xl border border-grafite/10 bg-creme/60 p-5">
-                <blockquote className="font-script text-[1.6rem] leading-snug text-laranja md:text-[1.75rem]">“{frase}”</blockquote>
-                <figcaption className="mt-3 flex items-center gap-3">
-                  <img src={m(av)} alt="" className="h-11 w-11 rounded-full object-cover ring-2 ring-laranja" />
-                  <div>
-                    <div className="font-serif text-lg font-bold leading-tight">{n}</div>
-                    <div className="font-body text-[12px] text-grafite2">{d}</div>
-                  </div>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
-          <a href={WHATS} target="_blank" rel="noreferrer" className="mt-8 inline-flex items-center gap-2 rounded-full bg-laranja px-6 py-3 font-body text-[14px] font-semibold text-white shadow-lg shadow-laranja/30 hover:brightness-110">
-            <WhatsLogo className="h-4 w-4" /> Falar direto com os engenheiros
-          </a>
-        </motion.div>
-      </div>
-      {/* na obra: as fotos de capacete no canteiro */}
-      <div className="mx-auto mt-14 grid max-w-6xl gap-4 sm:grid-cols-2">
-        {DONOS.map(([n, , foto, pos]) => (
-          <motion.div key={n} {...sobe} className="group relative aspect-[16/10] overflow-hidden rounded-2xl">
-            <img src={m(foto)} alt={n + ' na obra'} loading="lazy" style={{ objectPosition: pos }} className="h-full w-full object-cover transition duration-[1.2s] group-hover:scale-[1.04]" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <div className="absolute bottom-3 left-4 font-body text-[12px] font-semibold uppercase tracking-[0.18em] text-white">{n} · na obra</div>
-          </motion.div>
+    <section id="donos" className="relative overflow-hidden bg-white px-6 pb-20 pt-14 text-grafite md:px-12 md:pb-28 md:pt-16">
+      {/* destaque: só a foto dos dois + o botão */}
+      <motion.div {...sobe} className="relative mx-auto flex max-w-3xl flex-col items-center">
+        <div className="absolute inset-x-[12%] bottom-[14%] top-[18%] rounded-full bg-laranja/15 blur-3xl" />
+        <img src={m('donos_duo3.jpg')} alt="Eng. Vaury Gomes e Eng. Gabriella Gomes, donos da Gomes Construtora"
+          className="relative w-full max-w-[42rem] mix-blend-multiply" />
+        <a href={WHATS} target="_blank" rel="noreferrer" className="relative -mt-2 inline-flex items-center gap-2.5 rounded-full bg-laranja px-8 py-4 font-body text-[15px] font-semibold text-white shadow-xl shadow-laranja/40 transition hover:scale-[1.03] hover:brightness-110 md:text-base">
+          <WhatsLogo className="h-5 w-5" /> Falar com os engenheiros
+        </a>
+      </motion.div>
+      {/* na obra: fotos de capacete no canteiro com a frase de cada um */}
+      <div className="mx-auto mt-16 grid max-w-6xl gap-5 md:mt-20 md:grid-cols-2 md:gap-6">
+        {DONOS.map(([n, d, foto, pos, frase], i) => (
+          <motion.figure key={n} {...sobe} transition={{ ...sobe.transition, delay: i * 0.12 }}
+            className="group relative aspect-[4/5] overflow-hidden rounded-3xl md:aspect-[5/6]">
+            <img src={m(foto)} alt={n + ' na obra'} loading="lazy" style={{ objectPosition: pos }}
+              className="h-full w-full object-cover transition duration-[1.2s] group-hover:scale-[1.04]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent" />
+            <figcaption className="absolute inset-x-0 bottom-0 p-6 md:p-8">
+              <blockquote className="font-script text-[1.7rem] leading-snug text-white drop-shadow md:text-[2rem]">“{frase}”</blockquote>
+              <div className="mt-4 flex items-center gap-3">
+                <img src={m('simbolo.png')} alt="" className="h-8 w-auto" />
+                <div>
+                  <div className="font-serif text-lg font-bold text-white md:text-xl">{n}</div>
+                  <div className="font-body text-[12px] text-white/75">{d}</div>
+                </div>
+              </div>
+            </figcaption>
+          </motion.figure>
         ))}
       </div>
     </section>
@@ -291,26 +281,113 @@ function Regularizacao() {
 }
 
 // vídeo da Eng. Gabriella (enviado pelo cliente): igual ao WhatsApp — miniatura original + play; ao tocar, começa do início com som
-function VideoTour() {
+function VideoCard({ src, capa, rotulo, aria }) {
   const v = useRef(null)
   const [tocando, setTocando] = useState(false)
   const play = () => { const el = v.current; if (!el) return; el.muted = false; el.currentTime = 0; el.play().then(() => setTocando(true)).catch(() => {}) }
   const sair = () => { const el = v.current; if (el && !el.paused) el.pause() }
   return (
     <motion.div onViewportLeave={sair} className="relative aspect-[9/16] w-full overflow-hidden rounded-3xl bg-grafite shadow-2xl">
-      <video ref={v} src={m('tour_gabriella.mp4')} poster={m('tour_capa.jpg')} playsInline preload="none" controls={tocando}
+      <video ref={v} src={m(src)} poster={m(capa)} playsInline preload="none" controls={tocando}
         onEnded={() => setTocando(false)} className="h-full w-full object-cover" />
       {!tocando && (
-        <button onClick={play} aria-label="Assistir ao vídeo da Eng. Gabriella" className="group absolute inset-0 flex items-center justify-center bg-black/10">
+        <button onClick={play} aria-label={aria} className="group absolute inset-0 flex items-center justify-center bg-black/10">
           <span className="flex h-20 w-20 items-center justify-center rounded-full bg-black/45 backdrop-blur-sm ring-2 ring-white/80 transition group-hover:scale-110 group-hover:bg-laranja">
             <Play className="ml-1 h-9 w-9 fill-white text-white" />
           </span>
           <span className="absolute bottom-4 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-laranja px-5 py-2.5 font-body text-[13px] font-semibold text-white shadow-lg shadow-black/40">
-            Assistir · 1min32
+            {rotulo}
           </span>
         </button>
       )}
     </motion.div>
+  )
+}
+
+function VideoTour() {
+  return <VideoCard src="tour_gabriella.mp4" capa="tour_capa.jpg" rotulo="Assistir · 1min32" aria="Assistir ao vídeo da Eng. Gabriella" />
+}
+
+// prova social: depoimento da cliente (post CTFvhJAJd0i) + bastidor da Eng. Gabriella na obra (CXKYjPkD1N8)
+function ProvaSocial() {
+  return (
+    <section id="depoimentos" className="bg-creme px-6 py-24 text-grafite md:px-12 md:py-32">
+      <div className="mx-auto max-w-6xl">
+        <motion.div {...sobe} className="mx-auto max-w-3xl text-center">
+          <div className="tag">Quem construiu com a Gomes</div>
+          <h2 className="mt-2 font-serif text-[9vw] font-extrabold uppercase leading-[0.95] md:text-[3.6vw]">
+            Vai além de uma obra. <span className="block font-script text-[11vw] normal-case text-laranja md:text-[4.6vw]">É a construção de um sonho.</span>
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl font-body text-[15px] leading-relaxed text-grafite2">
+            Quem mora numa casa Gomes conta melhor do que a gente. E quem está na obra todo dia também.
+          </p>
+        </motion.div>
+        <div className="mx-auto mt-12 grid max-w-4xl gap-12 sm:grid-cols-2">
+          <motion.figure {...sobe} className="relative mx-auto w-full max-w-[20rem]">
+            <div className="absolute -left-3 -top-3 h-full w-full rounded-3xl border-2 border-laranja" />
+            <VideoCard src="depoimento_larissa.mp4" capa="depoimento_capa.jpg" rotulo="Depoimento · 41s" aria="Assistir ao depoimento da cliente Larissa" />
+            <figcaption className="mt-5 text-center">
+              <p className="font-script text-[1.7rem] leading-snug text-laranja">“Somos gratos por ter feito parte do seu sonho.”</p>
+              <p className="mt-1 font-body text-[13px] text-grafite2">Larissa · cliente Gomes, casa nova</p>
+            </figcaption>
+          </motion.figure>
+          <motion.figure {...sobe} transition={{ ...sobe.transition, delay: 0.12 }} className="relative mx-auto w-full max-w-[20rem]">
+            <div className="absolute -right-3 -top-3 h-full w-full rounded-3xl border-2 border-grafite/80" />
+            <VideoCard src="gabriella_obra.mp4" capa="gabriella_obra_capa.jpg" rotulo="Bastidores · 10s" aria="Assistir ao vídeo da Eng. Gabriella na obra" />
+            <figcaption className="mt-5 text-center">
+              <p className="font-script text-[1.7rem] leading-snug text-laranja">“Sei, sim. Eu toco a sua obra.”</p>
+              <p className="mt-1 font-body text-[13px] text-grafite2">Eng. Gabriella Gomes · responsável na obra</p>
+            </figcaption>
+          </motion.figure>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// faixa larga: os dois engenheiros conferindo o projeto na mesa da obra (post CUH8bGWLBPA)
+function FaixaSonho() {
+  return (
+    <section className="relative h-[78svh] min-h-[28rem] overflow-hidden">
+      <img src={m('donos_mesa.jpg')} alt="Eng. Gabriella e Eng. Vaury conferindo o projeto na obra" loading="lazy" className="absolute inset-0 h-full w-full object-cover object-[60%_35%]" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent md:bg-gradient-to-r md:from-black/80 md:via-black/40" />
+      <motion.div {...sobe} className="relative mx-auto flex h-full max-w-6xl flex-col justify-end px-6 pb-14 md:justify-center md:px-12 md:pb-0">
+        <div className="tag">Do projeto à chave</div>
+        <h2 className="mt-2 max-w-xl font-serif text-[10vw] font-extrabold uppercase leading-[0.95] text-white md:text-[4vw]">
+          Cada traço <span className="block font-script text-[12vw] normal-case text-laranja md:text-[5vw]">conferido de perto</span>
+        </h2>
+        <p className="mt-4 max-w-md font-body text-[15px] leading-relaxed text-white/85">
+          Projeto aberto na mesa da obra, trena na mão e os dois engenheiros juntos. É assim que a planta vira casa, sem surpresa.
+        </p>
+      </motion.div>
+    </section>
+  )
+}
+
+// Eng. Gabriella com a planta (post CV3ooeYJj5v)
+function FaixaPlanta() {
+  return (
+    <section className="bg-white px-6 py-20 text-grafite md:px-12 md:py-28">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2 md:gap-16">
+        <motion.div {...sobe} className="relative mx-auto w-full max-w-md">
+          <div className="absolute -bottom-3 -right-3 h-full w-full rounded-3xl bg-laranja/90" />
+          <img src={m('gabriella_planta.jpg')} alt="Eng. Gabriella Gomes analisando a planta" loading="lazy" className="relative aspect-[4/5] w-full rounded-3xl object-cover" />
+        </motion.div>
+        <motion.div {...sobe}>
+          <div className="tag">Projeto de arquitetura</div>
+          <blockquote className="mt-3 font-script text-[10vw] leading-[1.05] text-laranja md:text-[3.6vw]">
+            “Antes do tijolo, vem o sonho no papel.”
+          </blockquote>
+          <p className="mt-5 max-w-md font-body text-[15px] leading-relaxed text-grafite2">
+            A planta é desenhada para o seu terreno e para o jeito da sua família viver. E quem desenha é quem acompanha a obra.
+          </p>
+          <div className="mt-5 font-serif text-lg font-bold">Eng. Gabriella Gomes</div>
+          <a href={WHATS} target="_blank" rel="noreferrer" className="mt-6 inline-flex items-center gap-2 rounded-full bg-grafite px-6 py-3 font-body text-[14px] font-semibold text-white hover:bg-black">
+            <WhatsLogo className="h-4 w-4" /> Quero o meu projeto
+          </a>
+        </motion.div>
+      </div>
+    </section>
   )
 }
 
